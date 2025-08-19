@@ -1,0 +1,9 @@
+<h1>Buckets</h1>
+<a href="{% url 'bucket-create' %}">New</a>
+<ul>
+{% for bucket in object_list %}
+    <li><a href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a> - <a href="{% url 'bucket-delete' bucket.id %}">Delete</a></li>
+{% empty %}
+    <li>No buckets yet.</li>
+{% endfor %}
+</ul>
