@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Buckets</h1>
 <a href="{% url 'bucket-create' %}">New</a>
 <ul>
@@ -7,3 +10,4 @@
     <li>No buckets yet.</li>
 {% endfor %}
 </ul>
+{% endblock %}
