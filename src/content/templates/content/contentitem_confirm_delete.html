@@ -6,11 +6,11 @@
 {% block content %}
 
 <div class="flex items-center justify-between mb-4 border-b py-2">
-    <h1 class="text-3xl">Delete bucket '{{  object.title }}'</h1>
+    <h1 class="text-3xl">Delete item</h1>
 </div>
 
-<form method="post" class="text-center">{% csrf_token %}
-    <p class="text-center mb-4 mt-30">Are you sure you want to delete "{{ object.title }}"?</p>
+<form method="post" class="text-center mt-8">{% csrf_token %}
+    <p class="text-center mb-4 mt-30">Really delete '{{  object.title }}' from bucket '{{ object.bucket.title }}' ?</p>
     {{ form }}
     <input type="submit" class="{{ ''|append_class:"button" }}" value="Confirm">
 </form>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <video controls width="640">
+        <source src="{% url 'get-content-item' object.bucket.slug object.id %}?streaming=true" type="{{ object.content_type }}">
+        Your browser does not support the video tag.
+    </video>
+{#    <video controls width="640">#}
+{#        <source src="{% url 'get-content-item' object.bucket.slug object.id %}?streaming=true" type="video/mp4">#}
+{#        Your browser does not support the video tag.#}
+{#    </video>#}
+
+</body>
+</html>

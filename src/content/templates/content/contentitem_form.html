@@ -1,0 +1,20 @@
+{% load widget_tweaks formutils %}
+
+
+{% for field in form %}
+        <div class="mb-4">
+            <label class="block" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% if field.field.widget.input_type == 'text' %}
+                {% render_field field class="shadow appearance-none border border-slate-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" %}
+            {% elif field.field|field_type == 'ClearableFileInput' %}
+                {% render_field field %}
+            {% elif field.field|field_type == 'Select' %}
+                {%  with actual_class=''|append_class:'select' %}{% render_field field class=actual_class %}{% endwith %}
+            {% elif field.field|field_type == 'CheckboxInput' %}
+                {%  with actual_class=''|append_class:'check' %}{% render_field field class=actual_class %}{% endwith %}
+            {% else %}
+                uncommon field found: '{{ field.field|field_type }}'
+                {% render_field field %}
+            {% endif %}
+        </div>
+    {% endfor %}

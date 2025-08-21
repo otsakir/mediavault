@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load formutils %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+        <div class="flex items-center justify-between mb-4 border-b py-2">
+            <h1 class="text-3xl">Bucket '{{ bucket.title }}'</h1>
+{#            <a href="{% url 'bucket-create' %}" class="inline-block hover:bg-red-500 transition-colors text-white px-4 p-2 bg-blue-600 rounded-md">New</a>#}
+        </div>
+
+        {% if uploaded %}
+            <div>Your file was successfully uploaded</div>
+        {% endif %}
+
+        <h2 class="text-xl mb-4 mt-8">Items</h2>
+        {% if content_items|length > 0 %}
+            <table class="table-auto w-full border-spacing-y-2">
+                <thead>
+                    <tr>
+                        <th class="text-left">Title</th>
+                        <th class="text-left">Link</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for content_item in content_items %}
+                    <tr class="border-b">
+                        <td class="py-2">
+                            <a href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'get-content-item' bucket.slug content_item.id  %}">{% url 'get-content-item' bucket.slug content_item.id  %}</a>
+                            {% if content_item.streaming %}
+                                <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
+                            {% endif %}
+                        </td>
+                        <td class="text-right"><a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="text-center py-12">No buckets available</div>
+        {%  endif %}
+        <h2 class="text-xl mb-4 mt-8">Upload</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {%  include 'content/contentitem_form.html' with form=form %}
+
+            <input type="submit" value="Upload" class="{{ 'mt-4'|append_class:'button' }}" />
+        </form>
+        
+    {% endblock %}
+
+</body>
+</html>

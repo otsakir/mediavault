@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load formutils %}
+
+
+
+{% block content %}
+
+<div class="flex items-center justify-between mb-4 border-b py-2">
+    <h1 class="text-3xl">Update item fields</h1>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {%  include 'content/contentitem_form.html' with form=form %}
+    
+    <input type="submit" value="Update" class="{{ 'mt-4'|append_class:'button' }}" />
+</form>
+
+
+{%  endblock %}

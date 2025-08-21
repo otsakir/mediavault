@@ -1,13 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Buckets</h1>
-<a href="{% url 'bucket-create' %}">New</a>
-<ul>
-{% for bucket in object_list %}
-    <li><a href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a> - <a href="{% url 'bucket-delete' bucket.id %}">Delete</a></li>
-{% empty %}
-    <li>No buckets yet.</li>
-{% endfor %}
-</ul>
+    <div class="flex items-center justify-between mb-4 border-b py-2">
+        <h1 class="text-3xl">Buckets</h1>
+        <a href="{% url 'bucket-create' %}" class="inline-block hover:bg-red-500 transition-colors text-white px-4 p-2 bg-blue-600 rounded-md">New</a>
+    </div>
+
+    {% if object_list|length > 0 %}
+    <table class="table-auto w-full border-spacing-y-2">
+        <thead>
+            <tr>
+                <th class="text-left">Title</th>
+                <th class="text-left">Access link</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bucket in object_list %}
+            <tr>
+                <td class="py-2"><a href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a></td>
+                <td><a href="/content/{{ bucket.slug }}">/content/{{ bucket.slug }}</a></td>
+                <td class="text-right"><a href="{% url 'bucket-delete' bucket.id %}" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="text-center py-12">No buckets available</div>
+    {%  endif %}
+
 {% endblock %}
