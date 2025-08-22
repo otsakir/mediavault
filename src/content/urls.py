@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (BucketListView, BucketDetailView, BucketCreateView, BucketDeleteView, BucketUpdateView, content_root,
                     get_content_item, ContentItemDeleteView, ContentItemPlayerView, ContentItemUpdateView)
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('buckets/', BucketListView.as_view(), name='bucket-list'),

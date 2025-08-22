@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load formutils %}
 
 {% block content %}
     <div class="flex items-center justify-between mb-4 border-b py-2">
@@ -18,8 +19,8 @@
         <tbody>
             {% for bucket in object_list %}
             <tr>
-                <td class="py-2"><a href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a></td>
-                <td><a href="/content/{{ bucket.slug }}">/content/{{ bucket.slug }}</a></td>
+                <td class="py-2"><a class="hover:underline" href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a></td>
+                <td><a class="hover:underline" href="/content/{{ bucket.slug }}">/content/{{ bucket.slug }}</a></td>
                 <td class="text-right"><a href="{% url 'bucket-delete' bucket.id %}" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
             </tr>
             {% endfor %}

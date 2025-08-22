@@ -34,12 +34,12 @@
                     {% for content_item in content_items %}
                     <tr class="border-b">
                         <td class="py-2">
-                            <a href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
+                            <a class="hover:underline" href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
                         </td>
                         <td>
-                            <a href="{% url 'get-content-item' bucket.slug content_item.id  %}">{% url 'get-content-item' bucket.slug content_item.id  %}</a>
+                            <a class="hover:underline mr-2" href="{% url 'get-content-item' bucket.slug content_item.id  %}">Download</a>
                             {% if content_item.streaming %}
-                                <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
+                                <a class="hover:underline" href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
                             {% endif %}
                         </td>
                         <td class="text-right"><a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
@@ -48,7 +48,7 @@
                 </tbody>
             </table>
         {% else %}
-            <div class="text-center py-12">No buckets available</div>
+            <div class="text-center py-12">Nothing so far. Go fetch...</div>
         {%  endif %}
         <h2 class="text-xl mb-4 mt-8">Upload</h2>
         <form method="post" enctype="multipart/form-data">
@@ -57,7 +57,7 @@
 
             <input type="submit" value="Upload" class="{{ 'mt-4'|append_class:'button' }}" />
         </form>
-        
+
     {% endblock %}
 
 </body>
