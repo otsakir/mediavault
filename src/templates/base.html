@@ -1,7 +1,13 @@
 {% extends 'root.html' %}
+{% load formutils %}
 
 {% block body %}
-    <h1 class="p-8 text-3xl font-bold text-slate-700"><a href='/'>The Site</a></h1>
+    <div class="flex items-center justify-between p-8">
+        <h1 class="text-3xl font-bold text-slate-700"><a href='/'>The Site</a></h1>
+        <div>
+            <a class="{{ ''|append_class:'link' }}" href='{%  url 'logout' %}'>Logout</a>
+        </div>
+    </div>
     <div class="flex flex-col">
         <div class="container mx-auto max-w-screen-lg">
             {% block content %} {% endblock %}

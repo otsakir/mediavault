@@ -1,5 +1,6 @@
 import os.path
 
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import ForeignKey
@@ -10,9 +11,15 @@ class Bucket(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     slug = AutoSlugField(populate_from='title', unique=True, always_update=False)
+    users = models.ManyToManyField(User)
 
 
 class ContentItem(models.Model):
+
+    class Meta:
+        permissions = [
+            ('download_contentitem', 'Can download content item'),
+        ]
 
     class Type(models.TextChoices):
         binary = 'Binary'
