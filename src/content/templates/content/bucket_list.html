@@ -4,7 +4,9 @@
 {% block content %}
     <div class="flex items-center justify-between mb-4 border-b py-2">
         <h1 class="text-3xl">Buckets</h1>
-        <a href="{% url 'bucket-create' %}" class="inline-block hover:bg-red-500 transition-colors text-white px-4 p-2 bg-blue-600 rounded-md">New</a>
+        {% if perms.content.add_bucket %}
+            <a href="{% url 'bucket-create' %}" class="inline-block hover:bg-red-500 transition-colors text-white px-4 p-2 bg-blue-600 rounded-md">New</a>
+        {%  endif %}
     </div>
 
     {% if object_list|length > 0 %}
@@ -19,9 +21,17 @@
         <tbody>
             {% for bucket in object_list %}
             <tr>
-                <td class="py-2"><a class="hover:underline" href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a></td>
+                <td class="py-2">
+                    {% if perms.content.change_bucket %}
+                        <a class="hover:underline" href="{% url 'bucket-update' bucket.id %}">{{ bucket.title }}</a>
+                    {% else %}
+                        {{ bucket.title }}
+                    {% endif %}
+                </td>
                 <td><a class="hover:underline" href="/content/{{ bucket.slug }}">/content/{{ bucket.slug }}</a></td>
-                <td class="text-right"><a href="{% url 'bucket-delete' bucket.id %}" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
+                {% if perms.content.delete_bucket %}
+                    <td class="text-right"><a href="{% url 'bucket-delete' bucket.id %}" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

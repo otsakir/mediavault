@@ -26,7 +26,7 @@
                 <thead>
                     <tr>
                         <th class="text-left">Title</th>
-                        <th class="text-left">Link</th>
+                        {%  if perms.content.download_contentitem %}<th class="text-left">Link</th>{% endif %}
                         <th></th>
                     </tr>
                 </thead>
@@ -34,15 +34,26 @@
                     {% for content_item in content_items %}
                     <tr class="border-b">
                         <td class="py-2">
-                            <a class="hover:underline" href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
-                        </td>
-                        <td>
-                            <a class="hover:underline mr-2" href="{% url 'get-content-item' bucket.slug content_item.id  %}">Download</a>
-                            {% if content_item.streaming %}
-                                <a class="hover:underline" href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
+                            {% if perms.content.change_contentitem %}
+                                <a class="hover:underline" href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
+                            {% else %}
+                                {{ content_item.title }}
                             {% endif %}
                         </td>
-                        <td class="text-right"><a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
+                        {%  if perms.content.download_contentitem %}
+                            <td>
+
+                                    <a class="hover:underline mr-2" href="{% url 'get-content-item' bucket.slug content_item.id  %}">Download</a>
+                                    {% if content_item.streaming %}
+                                        <a class="hover:underline" href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
+                                    {% endif %}
+                            </td>
+                        {% endif %}
+                        <td class="text-right">
+                            {%  if perms.content.delete_contentitem %}
+                                <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -50,13 +61,15 @@
         {% else %}
             <div class="text-center py-12">Nothing so far. Go fetch...</div>
         {%  endif %}
-        <h2 class="text-xl mb-4 mt-8">Upload</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {%  include 'content/contentitem_form.html' with form=form %}
-
-            <input type="submit" value="Upload" class="{{ 'mt-4'|append_class:'button' }}" />
-        </form>
+        {% if perms.content.add_contentitem %}
+            <h2 class="text-xl mb-4 mt-8">Upload</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {%  include 'content/contentitem_form.html' with form=form %}
+    
+                <input type="submit" value="Upload" class="{{ 'mt-4'|append_class:'button' }}" />
+            </form>
+        {% endif %}
 
     {% endblock %}
 
