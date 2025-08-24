@@ -16,6 +16,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django import forms
 
+from .tasks import send_email_task
+
 
 class BucketListView(PermissionRequiredMixin, ListView):
     model = Bucket
@@ -93,6 +95,10 @@ def content_root(request, slug):
         if form.is_valid():
             content_item = ContentItem(**form.cleaned_data, type=ContentItem.Type.binary, bucket=bucket) # content type is by default binary in the model
             content_item.save()
+
+            # run sample celery task to process
+            send_email_task.delay('test@mail.com', 'message 1')
+
             redirect_url = reverse_lazy('content-root', kwargs={'slug': slug}) + f'?uploaded=yes'
             return HttpResponseRedirect(redirect_url)
     elif request.method == 'GET':

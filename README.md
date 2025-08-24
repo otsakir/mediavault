@@ -19,5 +19,8 @@ The following roles seem appropriate:
 * **Bucket user** - Bucket users have access to a single bucket. They can download and view and push new content to it.
   They can't create other buckets.
 * **Bucket guest** - Same as Bucket user but in a read-only fashion.
-* 
+
+## Dependencies
+
+ffmpeg, ffprobe, youtube-dl
 
