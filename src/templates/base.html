@@ -1,9 +1,16 @@
 {% extends 'root.html' %}
+{% load static %}
 {% load formutils %}
 
 {% block body %}
     <div class="flex items-center justify-between p-8">
-        <h1 class="text-3xl font-bold text-slate-700"><a href='/'>The Site</a></h1>
+            <a href='/'>
+                <div class="flex items-center gap-4">
+                    <img src="{% static 'images/logo.svg' %}" class="w-10" alt="logo"/>
+                    <h1 class="text-3xl font-bold text-slate-700">Media Vault</h1>
+                </div>
+            </a>
+        
         <div>
             <a class="{{ ''|append_class:'link' }}" href='{%  url 'logout' %}' title="{{ user.username }}">Logout</a>
         </div>
