@@ -16,7 +16,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django import forms
 
-from .tasks import send_email_task
+from content.tasks import fetch_yt_task
 
 
 class BucketListView(PermissionRequiredMixin, ListView):
@@ -63,9 +63,10 @@ class BucketUpdateView(PermissionRequiredMixin, UpdateView):
 class ContentUploadForm(forms.Form):
 
     title = forms.CharField()
-    file = forms.FileField()
+    file = forms.FileField(required=False)
     content_type = forms.ChoiceField(choices=ContentItem.HttpContentType.choices)
     streaming = forms.BooleanField(required=False, label='Streamable')
+    source_url = forms.URLField(required=False)
 
 
 def authorize_bucket_access(request, bucket_slug, permission_str):
@@ -81,6 +82,8 @@ def authorize_bucket_access(request, bucket_slug, permission_str):
 
     return bucket
 
+# def fetch_source_url(source_url, bucket):
+
 
 # handles uploading files
 @login_required
@@ -93,11 +96,15 @@ def content_root(request, slug):
         bucket = authorize_bucket_access(request, slug, 'content.add_contentitem') # TODO make sure to re-use the bucket object that is already loaded
         form = ContentUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            content_item = ContentItem(**form.cleaned_data, type=ContentItem.Type.binary, bucket=bucket) # content type is by default binary in the model
-            content_item.save()
+            print("form file:", form.cleaned_data['file'])
+            if form.cleaned_data['file']:
+                cleaned_data = form.cleaned_data.copy()
+                cleaned_data.pop('source_url')
+                content_item = ContentItem(**cleaned_data, type=ContentItem.Type.binary, bucket=bucket) # content type is by default binary in the model
+                content_item.save()
 
-            # run sample celery task to process
-            send_email_task.delay('test@mail.com', 'message 1')
+            if form.cleaned_data['source_url']:
+                fetch_yt_task.delay(form.cleaned_data['source_url'], bucket.id)
 
             redirect_url = reverse_lazy('content-root', kwargs={'slug': slug}) + f'?uploaded=yes'
             return HttpResponseRedirect(redirect_url)

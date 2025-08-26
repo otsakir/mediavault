@@ -27,11 +27,12 @@ class ContentItem(models.Model):
     class HttpContentType(models.TextChoices):
         application_octet_stream = 'application/octet-stream'
         mp4_video = "video/mp4"
+        mp4_audio = "audio/mp4"
 
     type = models.CharField(choices=Type.choices, max_length=20)
     content_type = models.CharField(choices=HttpContentType.choices, max_length=50, default=HttpContentType.application_octet_stream)
     title = models.CharField(max_length=100, default='untitled')
-    file = models.FileField()
+    file = models.FileField() # blank=True, null=True)
     bucket = models.ForeignKey(Bucket, on_delete=models.CASCADE, related_name='content_items')
     streaming = models.BooleanField(default=False)  # stream instead of download
 
@@ -50,3 +51,15 @@ class ContentItem(models.Model):
 
         return delete_result
 
+
+class FetchTaskResult(models.Model):
+
+    class Status(models.TextChoices):
+        started = 'Started'
+        finished = 'Finished'
+        error = 'Finished with error'
+
+    bucket = models.ForeignKey(Bucket, on_delete=models.CASCADE)
+    started_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(choices=Status.choices, default=Status.started)
+    error = models.TextField(blank=True)

@@ -17,7 +17,7 @@ classes_for_tag = {
     'select': 'hover:bg-red-500 px-4 p-2 rounded-md',
     'check': 'hover:bg-red-500 px-4 p-2 rounded-md',
     'textarea': 'border border-slate-500 rounded p-2 w-full',
-    'text': 'shadow appearance-none border border-slate-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline',
+    'text': 'shadow appearance-none border border-slate-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline',
     'link': 'hover:underline',
 }
 

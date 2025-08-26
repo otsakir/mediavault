@@ -1,20 +1,54 @@
 {% load widget_tweaks formutils %}
 
+{# title field #}
+<div class="mb-2">
+    <label class="block" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+    {%  with actual_class=''|append_class:'text' %}{% render_field form.title class=actual_class %}{% endwith %}
+</div>
 
-{% for field in form %}
-        <div class="mb-4">
-            <label class="block" for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {% if field.field.widget.input_type == 'text' %}
-                {% render_field field class="shadow appearance-none border border-slate-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" %}
-            {% elif field.field|field_type == 'ClearableFileInput' %}
-                {% render_field field %}
-            {% elif field.field|field_type == 'Select' %}
-                {%  with actual_class=''|append_class:'select' %}{% render_field field class=actual_class %}{% endwith %}
-            {% elif field.field|field_type == 'CheckboxInput' %}
-                {%  with actual_class=''|append_class:'check' %}{% render_field field class=actual_class %}{% endwith %}
-            {% else %}
-                uncommon field found: '{{ field.field|field_type }}'
-                {% render_field field %}
-            {% endif %}
-        </div>
-    {% endfor %}
+<h3 class="text-lg mt-4 mb-2">From file</h3>
+
+{# uploaded file #}
+<div class="mb-2">
+    <label class="block" for="{{ form.file.id_for_label }}">{{ form.file.label }}</label>
+    {%  render_field form.file %}
+</div>
+
+{# content type #}
+<div class="mb-2">
+    <label class="block" for="{{ form.content_type.id_for_label }}">{{ form.content_type.label }}</label>
+    {%  with actual_class=''|append_class:'select' %}{% render_field form.content_type class=actual_class %}{% endwith %}
+</div>
+
+{# streaming checkbox #}
+<div class="mb-2">
+    <label class="block" for="{{ form.streaming.id_for_label }}">{{ form.streaming.label }}</label>
+    {%  with actual_class=''|append_class:'check' %}{% render_field form.streaming class=actual_class %}{% endwith %}
+</div>
+
+<h3 class="text-lg mt-4 mb-2">From URL</h3>
+
+{# source url #}
+<div class="mb-2">
+    <label class="block" for="{{ form.source_url.id_for_label }}">{{ form.source_url.label }}</label>
+    {%  with actual_class=''|append_class:'text' %}{% render_field form.source_url class=actual_class %}{% endwith %}
+</div>
+
+{#{% for field in form %}#}
+{#        field.name: {{  field.name }}#}
+{#        <div class="mb-4">#}
+{#            <label class="block" for="{{ field.id_for_label }}">{{ field.label }}</label>#}
+{#            {% if field.field.widget.input_type == 'text' %}#}
+{#                {% render_field field class="shadow appearance-none border border-slate-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" %}#}
+{#            {% elif field.field|field_type == 'ClearableFileInput' %}#}
+{#                {% render_field field %}#}
+{#            {% elif field.field|field_type == 'Select' %}#}
+{#                {%  with actual_class=''|append_class:'select' %}{% render_field field class=actual_class %}{% endwith %}#}
+{#            {% elif field.field|field_type == 'CheckboxInput' %}#}
+{#                {%  with actual_class=''|append_class:'check' %}{% render_field field class=actual_class %}{% endwith %}#}
+{#            {% else %}#}
+{#                uncommon field found: '{{ field.field|field_type }}'#}
+{#                {% render_field field %}#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    {% endfor %}#}
