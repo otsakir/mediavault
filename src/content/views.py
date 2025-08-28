@@ -2,10 +2,10 @@ import os, re
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMixin
-from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse, HttpResponseNotModified, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
+from django.utils.html import format_html
 from django.utils.http import http_date
 from django.views import View
 from django.views.static import was_modified_since
@@ -16,6 +16,8 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
 from django import forms
+from django.contrib import messages
+from django.utils.safestring import mark_safe
 
 from content.tasks import fetch_yt_task
 
@@ -103,9 +105,11 @@ def content_root(request, slug):
                 cleaned_data.pop('source_url')
                 content_item = ContentItem(**cleaned_data, type=ContentItem.Type.binary, bucket=bucket) # content type is by default binary in the model
                 content_item.save()
+                messages.add_message(request, messages.SUCCESS, format_html('Content item uploaded. '))
 
             if form.cleaned_data['source_url']:
                 fetch_yt_task.delay(form.cleaned_data['source_url'], bucket.id)
+                messages.add_message(request, messages.INFO, format_html('Fetch task registered. See <a href="{}" class="underline hover:text-blue-800">tasks</a>', reverse('bucket-task-list', kwargs={'slug': bucket.slug})))
 
             redirect_url = reverse_lazy('content-root', kwargs={'slug': slug}) + f'?uploaded=yes'
             return HttpResponseRedirect(redirect_url)

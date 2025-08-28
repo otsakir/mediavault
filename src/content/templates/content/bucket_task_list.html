@@ -3,8 +3,7 @@
 
 {% block content %}
     <div class="flex items-center justify-between mb-4 border-b py-2">
-        <h1 class="text-3xl">Bucket task list</h1>
-
+        <h1 class="text-3xl">Bucket '{{ bucket.slug }}'</h1>
         <div class="flex items-center">
             <a href="?refresh=1" >
                 <div class="p-2 hover:bg-blue-100 hover:text-blue-800 hover:rounded-md">
@@ -13,7 +12,7 @@
                     </svg>
                 </div>
             </a>
-            <form method="POST" action="{%  url 'bucket-task-list-delete' bucket.slug %}"> 
+            <form method="POST" action="{%  url 'bucket-task-list-delete' bucket.slug %}">
                 {% csrf_token %}
 {#                <div class="p-2 hover:bg-red-100 hover:text-red-800 hover:rounded-md">#}
                 <button type="submit" class="p-2 hover:bg-red-100 hover:text-red-800 hover:rounded-md">
@@ -24,27 +23,31 @@
             </form>
         </div>
     </div>
-    
-    
-    {%  if object_list|length > 0 %}
-        <div class="grid grid-cols-4 gap-4 p-4 bg-white shadow">
-            <!-- Header -->
-            <div class="font-semibold text-gray-700 py-2">Started at</div>
-            <div class="font-semibold text-gray-700 py-2">Files</div>
-            <div class="font-semibold text-gray-700 py-2">Status</div>
-            <div class="font-semibold text-gray-700 py-2">Error</div>
-    
-            {% for task in object_list %}
-                <!-- Rows -->
-                <div class="text-gray-900 py-3 border-t">{{ task.started_at }}</div>
-                <div class="text-gray-600 py-3 border-t">{{ task.text }}</div>
-                <div class="text-gray-600 py-3 border-t">{{ task.status }}</div>
-                <div class="text-gray-600 py-3 border-t">{{ task.error }}</div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="text-center">No pending tasks</div>
-    {% endif %}
+
+    <h2 class="font-bold text-xl mb-4">Tasks</h2>
+    <div class="p-4 shadow">
+
+        {%  if object_list|length > 0 %}
+            <div class="grid grid-cols-4 gap-4 bg-white">
+                <!-- Header -->
+                <div class="font-semibold text-gray-700 py-2">Started at</div>
+                <div class="font-semibold text-gray-700 py-2">Files</div>
+                <div class="font-semibold text-gray-700 py-2">Status</div>
+                <div class="font-semibold text-gray-700 py-2">Error</div>
+
+                {% for task in object_list %}
+                    <!-- Rows -->
+                    <div class="text-gray-900 py-3 border-t">{{ task.started_at }}</div>
+                    <div class="text-gray-600 py-3 border-t">{{ task.text }}</div>
+                    <div class="text-gray-600 py-3 border-t">{{ task.status }}</div>
+                    <div class="text-gray-600 py-3 border-t">{{ task.error }}</div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">No pending tasks</div>
+        {% endif %}
+
+    </div>
 
 
 

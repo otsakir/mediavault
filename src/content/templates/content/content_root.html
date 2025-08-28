@@ -2,84 +2,92 @@
 {% load widget_tweaks %}
 {% load formutils %}
 
+{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% block content %}
-        <div class="flex items-center justify-between mb-4 border-b py-2">
-            <h1 class="text-3xl">Bucket '{{ bucket.title }}'</h1>
-{#            <a href="{% url 'bucket-create' %}" class="inline-block hover:bg-red-500 transition-colors text-white px-4 p-2 bg-blue-600 rounded-md">New</a>#}
-            <a href="{% url 'bucket-task-list' bucket.slug %}">
-                <div class='p-2 hover:bg-blue-100 rounded-md'>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                </div>
-            </a>
-        </div>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="bg-blue-100 p-4 text-blue-500 mb-2 rounded-md flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+        </svg>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
-        {% if uploaded %}
-            <div>Upload task registered. See all <a href="{% url 'bucket-task-list' bucket.slug %}" class="text-blue-800 hover:underline">tasks</a>.</div>
-        {% endif %}
 
-        <h2 class="text-xl mb-4 mt-8">Items</h2>
+    <div class="flex items-center justify-between mb-4 border-b py-2">
+        <h1 class="text-3xl">Bucket '{{ bucket.title }}'</h1>
+        <a href="{% url 'bucket-task-list' bucket.slug %}">
+            <div class='p-2 hover:bg-blue-100 rounded-md'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+            </div>
+        </a>
+    </div>
+
+{#    {% if uploaded %}#}
+{#        <div>Upload task registered. See all <a href="{% url 'bucket-task-list' bucket.slug %}" class="text-blue-800 hover:underline">tasks</a>.</div>#}
+{#    {% endif %}#}
+
+    <h2 class="font-bold text-xl mb-4 mt-8">Items</h2>
+    <div class="shadow p-4">
+
         {% if content_items|length > 0 %}
-            <table class="table-auto w-full border-spacing-y-2">
-                <thead>
-                    <tr>
-                        <th class="text-left">Title</th>
-                        {%  if perms.content.download_contentitem %}<th class="text-left">Link</th>{% endif %}
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for content_item in content_items %}
-                    <tr class="border-b">
-                        <td class="py-2">
-                            {% if perms.content.change_contentitem %}
-                                <a class="hover:underline" href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
-                            {% else %}
-                                {{ content_item.title }}
-                            {% endif %}
-                        </td>
-                        {%  if perms.content.download_contentitem %}
-                            <td>
+            <div class="grid grid-cols-3 gap-4">
+                <!-- Header -->
+                <div class="font-semibold text-gray-700 py-2">Title</div>
+                {%  if perms.content.download_contentitem %}
+                    <div class="font-semibold text-gray-700 py-2">Link</div>
+                {% endif %}
+                <div class="font-semibold text-gray-700 py-2">Actions</div>
 
-                                    <a class="hover:underline mr-2" href="{% url 'get-content-item' bucket.slug content_item.id  %}">Download</a>
-                                    {% if content_item.streaming %}
-                                        <a class="hover:underline" href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
-                                    {% endif %}
-                            </td>
+                {% for content_item in content_items %}
+                    <!-- Rows -->
+                    <div class="text-gray-900 py-3 border-t">
+                        {% if perms.content.change_contentitem %}
+                            <a class="hover:underline" href="{% url 'content-item-update' bucket.slug content_item.id %}">{{ content_item.title }}</a>
+                        {% else %}
+                            {{ content_item.title }}
                         {% endif %}
-                        <td class="text-right">
-                            {%  if perms.content.delete_contentitem %}
-                                <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </div>
+
+                    {%  if perms.content.download_contentitem %}
+                        <div class="text-gray-900 py-3 border-t">
+                                <a class="hover:underline mr-2" href="{% url 'get-content-item' bucket.slug content_item.id  %}">Download</a>
+                                {% if content_item.streaming %}
+                                    <a class="hover:underline" href="{% url 'get-content-item' bucket.slug content_item.id  %}/player" target="_blank">View</a>
+                                {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="text-gray-600 py-3 border-t">
+                        {%  if perms.content.delete_contentitem %}
+                            <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            </div>
+
         {% else %}
-            <div class="text-center py-12">Nothing so far. Go fetch...</div>
+            <div class="text-center py-4">Nothing so far. Go fetch...</div>
         {%  endif %}
-        {% if perms.content.add_contentitem %}
-            <h2 class="text-xl mb-4 mt-8 font-bold">Upload</h2>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {%  include 'content/contentitem_form.html' with form=form %}
-    
-                <input type="submit" value="Upload" class="{{ 'mt-4'|append_class:'button' }}" />
-            </form>
-        {% endif %}
+    </div>
 
-    {% endblock %}
+    {% if perms.content.add_contentitem %}
+        <h2 class="text-xl mb-4 mt-10 font-bold">Upload</h2>
+        <form method="post" enctype="multipart/form-data" class="mb-4">
+            {% csrf_token %}
+            {%  include 'content/contentitem_form.html' with form=form %}
 
-</body>
-</html>
+            <input type="submit" value="Upload" class="{{ 'mt-10'|append_class:'button' }}" />
+        </form>
+    {% endif %}
+
+{% endblock %}
+
