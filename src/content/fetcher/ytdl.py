@@ -27,6 +27,7 @@ def get_content_type_by_extension(ext):
 
 def fetch_yt(url, bucket_id):
     downloaded_info: dict[str, dict] = {}
+    title = ''
 
     bucket = Bucket.objects.get(id=bucket_id)
     task_result = FetchTaskResult.objects.create(bucket=bucket)
@@ -51,15 +52,20 @@ def fetch_yt(url, bucket_id):
 
             # then, move files under MEDIA_ROOT and create respective content items
             print('downloaded', len(downloaded_info), 'files')
+            titles = []
             for (filename, info_dict) in downloaded_info.items():
+                title = info_dict['title']
+                titles.append(title)
                 content_type = get_content_type_by_extension(info_dict['ext'])
                 shutil.move(info_dict['filename'], settings.MEDIA_ROOT)
                 moved_filename = os.path.join(settings.MEDIA_ROOT, os.path.basename(info_dict['filename']))
-                content_item = ContentItem(title=info_dict['title'], content_type=content_type, bucket=bucket)
+                content_item = ContentItem(title=title, content_type=content_type, bucket=bucket)
                 content_item.file.name = moved_filename
                 content_item.save()
 
         task_result.status = FetchTaskResult.Status.finished
+        titles_str = ', '.join(titles)
+        task_result.text = f'{titles_str} - {url}'
         task_result.save()
 
     except Exception as e:

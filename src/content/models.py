@@ -54,6 +54,9 @@ class ContentItem(models.Model):
 
 class FetchTaskResult(models.Model):
 
+    class Meta:
+        ordering = ['-started_at']
+
     class Status(models.TextChoices):
         started = 'Started'
         finished = 'Finished'
@@ -63,3 +66,4 @@ class FetchTaskResult(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=Status.choices, default=Status.started)
     error = models.TextField(blank=True)
+    text = models.TextField(default='', blank=True, null=True)

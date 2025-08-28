@@ -7,13 +7,14 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse, HttpResponseNotModified, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.utils.http import http_date
+from django.views import View
 from django.views.static import was_modified_since
 
-from content.models import Bucket, ContentItem
+from content.models import Bucket, ContentItem, FetchTaskResult
 from django.views.generic import ListView, DetailView, DeleteView, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django import forms
 
 from content.tasks import fetch_yt_task
@@ -221,3 +222,30 @@ class ContentItemUpdateView(ContentItemSingleObjectMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('content-root', args=[self.kwargs['slug']])
+
+
+class BucketTaskListView(AuthorizeBucketAccessMixin, ListView):
+    model = FetchTaskResult
+    paginate_by = 10
+    template_name = 'content/bucket_task_list.html'
+
+    def get_queryset(self):
+        return FetchTaskResult.objects.filter(bucket=self.authorized_bucket)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bucket'] = self.authorized_bucket
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('refresh', None):
+            return HttpResponseRedirect(reverse('bucket-task-list', kwargs=kwargs))  # redirect to this
+
+        return super().get(self, request, *args, **kwargs)
+
+
+class BucketTaskDeleteAllView(AuthorizeBucketAccessMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        FetchTaskResult.objects.filter(bucket=self.authorized_bucket).delete()
+        return HttpResponseRedirect(reverse('bucket-task-list', kwargs=kwargs))
