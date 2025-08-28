@@ -5,7 +5,9 @@
     <div class="flex items-center justify-between mb-4 border-b py-2">
         <h1 class="text-3xl">Buckets</h1>
         {% if perms.content.add_bucket %}
-            <a href="{% url 'bucket-create' %}" class="inline-block hover:bg-red-500 transition-colors text-white px-4 p-2 bg-blue-600 rounded-md">New</a>
+            <a href="{% url 'bucket-create' %}">
+                <div class='p-2 hover:text-blue-800 hover:bg-blue-100 rounded-md'>{% icon 'folder-plus' %}</div>
+            </a>
         {%  endif %}
     </div>
 
@@ -30,7 +32,11 @@
                 </td>
                 <td><a class="hover:underline" href="/content/{{ bucket.slug }}">/content/{{ bucket.slug }}</a></td>
                 {% if perms.content.delete_bucket %}
-                    <td class="text-right"><a href="{% url 'bucket-delete' bucket.id %}" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a></td>
+                    <td class="text-right">
+                        <a href="{% url 'bucket-delete' bucket.id %}">
+                            <div class="inline-block p-2 rounded-md hover:bg-red-100 hover:text-red-800">{% icon 'trash' ''%}</div>
+                        </a>
+                    </td>
                 {% endif %}
             </tr>
             {% endfor %}

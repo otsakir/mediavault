@@ -4,7 +4,13 @@
 
 {% block content %}
     <div class="flex items-center justify-between mb-4 border-b py-2">
-        <h1 class="text-3xl">New bucket</h1>
+        <h1 class="text-3xl">
+            {% if not bucket %}
+                New bucket
+            {% else %}
+                Bucket {{  bucket.slug }}
+            {% endif %}
+        </h1>
     </div>
     <form method="post">{% csrf_token %}
     <!--    {{ form.as_div }}-->

@@ -44,7 +44,7 @@
                 {%  if perms.content.download_contentitem %}
                     <div class="font-semibold text-gray-700 py-2">Link</div>
                 {% endif %}
-                <div class="font-semibold text-gray-700 py-2">Actions</div>
+                <div class="font-semibold text-gray-700 py-2"></div>
 
                 {% for content_item in content_items %}
                     <!-- Rows -->
@@ -65,9 +65,11 @@
                         </div>
                     {% endif %}
 
-                    <div class="text-gray-600 py-3 border-t">
+                    <div class="text-gray-600 py-3 border-t text-right">
                         {%  if perms.content.delete_contentitem %}
-                            <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete" class="inline-block text-white px-4 p-1 bg-red-500 rounded-md">Delete</a>
+                            <a href="{% url 'get-content-item' bucket.slug content_item.id  %}/delete">
+                                <div class='inline-block p-2 hover:text-red-800 hover:bg-red-100 rounded-md'>{% icon 'trash' %}</div>
+                            </a>
                         {% endif %}
                     </div>
 
