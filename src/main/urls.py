@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('', RedirectView.as_view(url='buckets/', permanent=True), name='home'),
     path('admin/', admin.site.urls),
     path('', include('content.urls')),
     path('', include("authorize.urls")),
-]
+] + debug_toolbar_urls()
