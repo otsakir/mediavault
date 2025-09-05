@@ -3,15 +3,7 @@ import os.path
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import ForeignKey
-from autoslug import AutoSlugField
-
-
-class Bucket(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField(max_length=250)
-    slug = AutoSlugField(populate_from='title', unique=True, always_update=False)
-    users = models.ManyToManyField(User)
+from core.models import Bucket
 
 
 class ContentItem(models.Model):
@@ -39,6 +31,7 @@ class ContentItem(models.Model):
     def delete(self, using=None, keep_parents=False):
         file_path = None
         if self.file and os.path.isfile(self.file.path):
+
             file_path = self.file.path
 
         delete_result = super().delete(using, keep_parents)

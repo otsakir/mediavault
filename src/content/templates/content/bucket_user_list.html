@@ -1,0 +1,32 @@
+{% extends 'content/bucket_sub_list.html' %}
+{% load formutils %}
+
+
+{% block sub %}
+    <div class="p-4 shadow">
+
+            USER LIST
+
+{#        {%  if object_list|length > 0 %}#}
+{#            <div class="grid grid-cols-4 gap-4 bg-white">#}
+{#                <!-- Header -->#}
+{#                <div class="font-semibold text-gray-700 py-2">Started at</div>#}
+{#                <div class="font-semibold text-gray-700 py-2">Files</div>#}
+{#                <div class="font-semibold text-gray-700 py-2">Status</div>#}
+{#                <div class="font-semibold text-gray-700 py-2">Error</div>#}
+{##}
+{#                {% for task in object_list %}#}
+{#                    <!-- Rows -->#}
+{#                    <div class="text-gray-900 py-3 border-t">{{ task.started_at }}</div>#}
+{#                    <div class="text-gray-600 py-3 border-t">{{ task.text }}</div>#}
+{#                    <div class="text-gray-600 py-3 border-t">{{ task.status }}</div>#}
+{#                    <div class="text-gray-600 py-3 border-t">{{ task.error }}</div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        {% else %}#}
+{#            <div class="text-center">No pending tasks</div>#}
+{#        {% endif %}#}
+
+    </div>
+
+{% endblock %}

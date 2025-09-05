@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load formutils %}
-
+{% load widget_tweaks formutils %}
 
 
 {% block content %}
@@ -12,7 +11,25 @@
 <form method="post">
     {% csrf_token %}
     
-    {%  include 'content/contentitem_form.html' with form=form %}
+
+    {# title field #}
+    <div class="mb-8">
+        <label class="block" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+        {%  with actual_class=''|append_class:'text' %}{% render_field form.title class=actual_class %}{% endwith %}
+    </div>
+
+    {# content type #}
+    <div class="mb-3">
+        <label class="block" for="{{ form.content_type.id_for_label }}">{{ form.content_type.label }}</label>
+        {%  with actual_class=''|append_class:'select' %}{% render_field form.content_type class=actual_class %}{% endwith %}
+    </div>
+
+    {# streaming checkbox #}
+    <div class="mb-3">
+        <label class="block" for="{{ form.streaming.id_for_label }}">{{ form.streaming.label }}</label>
+        {%  with actual_class=''|append_class:'check' %}{% render_field form.streaming class=actual_class %}{% endwith %}
+    </div>
+
     
     <input type="submit" value="Update" class="{{ 'mt-4'|append_class:'button' }}" />
 </form>

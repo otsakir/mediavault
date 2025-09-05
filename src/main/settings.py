@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'widget_tweaks',
     'authorize.apps.AuthorizeConfig',
+    'core.apps.CoreConfig',
+    'moderation.apps.ModerationConfig',
     'content.apps.ContentConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,6 +74,7 @@ TEMPLATES = [
 ]
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'static-prod'
 
 WSGI_APPLICATION = 'main.wsgi.application'
 

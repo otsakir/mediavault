@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load formutils %}
+
+{% block content %}
+    <div class="flex items-center justify-between mb-4 border-b py-2">
+        <div class="flex items-center gap-2">
+            <a class='hover:text-blue-800 ' href="{% url 'content-root' bucket.slug %}">{% icon 'arrow-uturn-left' %}</a>
+            <h1 class="text-3xl">Bucket '{{ bucket.slug }}'</h1>
+        </div>
+    </div>
+
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex gap-4">
+            {% if menuitem == 'users' %}
+                <a href="{% url 'bucket-task-list' bucket.slug %}"><h2 class="font-bold text-xl hover:border-b">Tasks</h2></a>
+                <h2 class="font-bold text-xl hover:border-b border-b">Users</h2>
+            {% elif menuitem == 'tasks' %}
+                <h2 class="font-bold text-xl hover:border-b border-b">Tasks</h2>
+                <a href="{% url 'bucket-user-list' bucket.slug %}"><h2 class="font-bold text-xl hover:border-b">Users</h2></a>
+            {% endif %}
+        </div>
+
+        {% block subbuttons %}{% endblock %}
+    </div>
+
+    {% block sub %}
+        No sub block
+    {% endblock %}
+
+
+
+{% endblock %}

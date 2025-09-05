@@ -4,3 +4,4 @@
 src/db.sqlite3
 src/uploads/*
 src/content/migrations/
+src/static-prod/

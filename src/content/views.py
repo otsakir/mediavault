@@ -17,59 +17,35 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
 from django import forms
 from django.contrib import messages
-from django.utils.safestring import mark_safe
+from django.contrib.auth.models import User
 
 from content.tasks import fetch_yt_task
 
 
-class BucketListView(PermissionRequiredMixin, ListView):
-    model = Bucket
-    paginate_by = 10
-    permission_required = 'content.view_bucket'
-
-    def get_queryset(self):
-        return self.request.user.bucket_set.all()
-
-
-class BucketCreateView(PermissionRequiredMixin, CreateView):
-    model = Bucket
-    fields = ['title', 'description']
-    template_name = 'content/bucket_form.html'
-    success_url = reverse_lazy('bucket-list')
-    permission_required = 'content.add_bucket'
-
-    # inject creator user in new bucket object
-    def form_valid(self, form):
-        instance = form.save()
-        instance.users.add(self.request.user)
-        return super().form_valid(form)
-
-
-class BucketDetailView(DetailView):
-    model = Bucket
-
-
-class BucketDeleteView(PermissionRequiredMixin, DeleteView):
-    model = Bucket
-    success_url = reverse_lazy('bucket-list')
-    permission_required = 'content.delete_bucket'
-
-
-class BucketUpdateView(PermissionRequiredMixin, UpdateView):
-    model = Bucket
-    fields = ['title', 'description']
-    permission_required = 'content.change_bucket'
-
-    success_url = reverse_lazy('bucket-list')
-
-
 class ContentUploadForm(forms.Form):
 
-    title = forms.CharField()
+    title = forms.CharField(required=False)
     file = forms.FileField(required=False)
     content_type = forms.ChoiceField(choices=ContentItem.HttpContentType.choices)
     streaming = forms.BooleanField(required=False, label='Streamable')
     source_url = forms.URLField(required=False)
+
+    def clean(self):
+        cleaned_data =  super().clean()
+        title = cleaned_data.get('title')
+        file = cleaned_data.get('file')
+        source_url = cleaned_data.get('source_url')
+        print("file:", file)
+        print('source_url:', source_url)
+
+        if not source_url and file and not title:
+            self.add_error('title', 'required for locally uploaded files')
+
+        if source_url and file or (not source_url and not file):
+            self.add_error(None, format_html("Use <strong>either</strong> 'source url' or local file"))
+
+        return cleaned_data
+
 
 
 def authorize_bucket_access(request, bucket_slug, permission_str):
@@ -228,16 +204,26 @@ class ContentItemUpdateView(ContentItemSingleObjectMixin, UpdateView):
         return reverse_lazy('content-root', args=[self.kwargs['slug']])
 
 
-class BucketTaskListView(AuthorizeBucketAccessMixin, ListView):
+class BucketSubListView(ListView):
+    menuitem = None
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['menuitem'] = self.menuitem
+        return context
+
+
+class BucketTaskListView(AuthorizeBucketAccessMixin, BucketSubListView):
     model = FetchTaskResult
     paginate_by = 10
     template_name = 'content/bucket_task_list.html'
+    menuitem = 'tasks'
 
     def get_queryset(self):
         return FetchTaskResult.objects.filter(bucket=self.authorized_bucket)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         context['bucket'] = self.authorized_bucket
         return context
 
@@ -248,8 +234,10 @@ class BucketTaskListView(AuthorizeBucketAccessMixin, ListView):
         return super().get(self, request, *args, **kwargs)
 
 
+
 class BucketTaskDeleteAllView(AuthorizeBucketAccessMixin, View):
 
     def post(self, request, *args, **kwargs):
         FetchTaskResult.objects.filter(bucket=self.authorized_bucket).delete()
         return HttpResponseRedirect(reverse('bucket-task-list', kwargs=kwargs))
+

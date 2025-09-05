@@ -1,12 +1,22 @@
 {% load widget_tweaks formutils %}
 
+{%  if form.non_field_errors %}
+    <div class="text-red-400 mb-2">{{ form.non_field_errors }}</div>
+{% endif %}
+
 {# title field #}
 <div class="mb-8">
     <label class="block" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
     {%  with actual_class=''|append_class:'text' %}{% render_field form.title class=actual_class %}{% endwith %}
+    {% if form.errors.title %}
+        <div class="text-sm text-red-400">{{ form.errors.title }}</div>
+    {% else %}
+        <div class="text-sm text-slate-400">Required, if uploading local file</div>
+    {% endif %}
+
 </div>
 
-<h3 class="text-lg mt-4 mb-2 font-semibold">From file</h3>
+<h3 class="text-lg mt-4 mb-2 font-semibold">From local file</h3>
 
 {# uploaded file #}
 <div class="mb-3">
@@ -20,18 +30,19 @@
     {%  with actual_class=''|append_class:'select' %}{% render_field form.content_type class=actual_class %}{% endwith %}
 </div>
 
+<h3 class="text-lg mt-6 mb-2 font-bold">From URL</h3>
+
+{# source url #}
+<div class="mb-8">
+    <label class="block" for="{{ form.source_url.id_for_label }}">{{ form.source_url.label }}</label>
+    {%  with actual_class=''|append_class:'text' %}{% render_field form.source_url class=actual_class %}{% endwith %}
+</div>
+
+
 {# streaming checkbox #}
 <div class="mb-3">
     <label class="block" for="{{ form.streaming.id_for_label }}">{{ form.streaming.label }}</label>
     {%  with actual_class=''|append_class:'check' %}{% render_field form.streaming class=actual_class %}{% endwith %}
-</div>
-
-<h3 class="text-lg mt-6 mb-2 font-bold">From URL</h3>
-
-{# source url #}
-<div class="mb-2">
-    <label class="block" for="{{ form.source_url.id_for_label }}">{{ form.source_url.label }}</label>
-    {%  with actual_class=''|append_class:'text' %}{% render_field form.source_url class=actual_class %}{% endwith %}
 </div>
 
 {#{% for field in form %}#}

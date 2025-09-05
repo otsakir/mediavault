@@ -24,3 +24,23 @@ The following roles seem appropriate:
 
 ffmpeg, ffprobe, youtube-dl
 
+
+## Data schema
+
+* A user might be a member of a single community. Membership is signified by the existence of a Member entity attached to 
+  the user object. The Member attached object has a required foreign key to the Community. You can further get the members
+  of a community by accessing community.member_set property.
+* The actual benefits members of a community will enjoy is a thing to define. For now, it's just a list of members that
+  are offered as suggested users to gain access to a bucket.
+* Initially a user belongs to no community. He can then start a community. That means create a community object and 
+  attach himself a Member object for that community. 
+* Adding access to a bucket involves adding users to its 'users' property. The suggested users to pick from will be the 
+  members of a community. 
+
+### Views
+
+* Bucket users. Have a textbox for the user to add new members to the bucket. Show that in the Bucket/1/users.
+
+* `POST community/` .Create a community for the current user if he doesn't already have one. Give a 'name'.
+* Invite members to the community. Or we might as well add them with no questions asked.
+
