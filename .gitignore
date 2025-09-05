@@ -3,5 +3,5 @@
 **/__pycache__
 src/db.sqlite3
 src/uploads/*
-src/content/migrations/
+src/**/migrations/
 src/static-prod/

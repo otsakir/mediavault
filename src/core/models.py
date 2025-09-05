@@ -12,7 +12,13 @@ class Bucket(models.Model):
     users = models.ManyToManyField(User)
 
 
-# class Community(models.Model):
-#     name = models.CharField(max_length=50)
-#     group = models.OneToOneField(Group, on_delete=models.RESTRICT)
+class Community(models.Model):
+    name = models.CharField(max_length=50)
+    slug = AutoSlugField(populate_from='name', unique=True, always_update=False)
+
+
+class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, on_delete=models.CASCADE)
+
 

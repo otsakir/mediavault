@@ -1,0 +1,4 @@
+
+
+class AlreadyMemberException(Exception):
+    pass
