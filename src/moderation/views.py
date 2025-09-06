@@ -144,3 +144,5 @@ class BucketUserListView(BucketMembershipMixin, BucketSubListView):
             context['community_members'] = member.community
 
         return context
+
+

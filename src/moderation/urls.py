@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views import BucketListView, BucketCreateView, BucketDeleteView, BucketUpdateView, BucketUserListView, CommunityDetailView, CommunityCreateView, BucketTaskListView
+from .api_views import APIBucketListView
 
 
 urlpatterns = [
@@ -12,6 +13,8 @@ urlpatterns = [
     path('buckets/<slug:slug>/tasks/', BucketTaskListView.as_view(), name='bucket-task-list'),
 
     path('community/', CommunityDetailView.as_view(), name='community-detail'),
-    path('community/new', CommunityCreateView.as_view(), name='community-create')
+    path('community/new', CommunityCreateView.as_view(), name='community-create'),
+
+    path('api/buckets', APIBucketListView.as_view(), name='api-bucket-list')
 
 ]
