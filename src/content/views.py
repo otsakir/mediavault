@@ -204,37 +204,6 @@ class ContentItemUpdateView(ContentItemSingleObjectMixin, UpdateView):
         return reverse_lazy('content-root', args=[self.kwargs['slug']])
 
 
-class BucketSubListView(ListView):
-    menuitem = None
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['menuitem'] = self.menuitem
-        return context
-
-
-class BucketTaskListView(AuthorizeBucketAccessMixin, BucketSubListView):
-    model = FetchTaskResult
-    paginate_by = 10
-    template_name = 'content/bucket_task_list.html'
-    menuitem = 'tasks'
-
-    def get_queryset(self):
-        return FetchTaskResult.objects.filter(bucket=self.authorized_bucket)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['bucket'] = self.authorized_bucket
-        return context
-
-    def get(self, request, *args, **kwargs):
-        if request.GET.get('refresh', None):
-            return HttpResponseRedirect(reverse('bucket-task-list', kwargs=kwargs))  # redirect to this
-
-        return super().get(self, request, *args, **kwargs)
-
-
-
 class BucketTaskDeleteAllView(AuthorizeBucketAccessMixin, View):
 
     def post(self, request, *args, **kwargs):

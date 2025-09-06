@@ -13,7 +13,7 @@ class BucketMembershipMixin(UserPassesTestMixin):
     def test_func(self):
         print("BucketMembershipMixin: in test_func()")
         try:
-            self.bucket = Bucket.objects.get(pk=self.kwargs.get('pk'), users__id=self.request.user.id)
+            self.bucket = Bucket.objects.get(slug=self.kwargs.get('slug'), users__id=self.request.user.id)
         except Bucket.DoesNotExist as e:
             raise Http404('Bucket not accessible')
 

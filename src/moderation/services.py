@@ -1,6 +1,6 @@
 from core.models import Community, Member
 from django.contrib.auth.models import User
-from exceptions import AlreadyMemberException
+from .exceptions import AlreadyMemberException
 from django.db import transaction
 
 
@@ -14,12 +14,9 @@ class CommunityService:
         if len(members) > 0:
             raise AlreadyMemberException()
 
-        community = Community(name)
+        community = Community(name=name)
         community.save()
         membership = Member(community=community, user=owner)
         membership.save()
 
         return community
-
-    # @staticmethod
-    # def in_community():

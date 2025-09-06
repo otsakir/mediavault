@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (content_root,
                     get_content_item, ContentItemDeleteView, ContentItemPlayerView, ContentItemUpdateView,
-                    BucketTaskListView, BucketTaskDeleteAllView)
+                    BucketTaskDeleteAllView)
 urlpatterns = [
 
     path('content/<slug:slug>/', content_root, name='content-root'),
@@ -12,8 +12,6 @@ urlpatterns = [
     path('content/<slug:slug>/<int:item_id>/update', ContentItemUpdateView.as_view(), name='content-item-update'),
 
     path('content/<slug:slug>/tasks/delete', BucketTaskDeleteAllView.as_view(), name='bucket-task-list-delete'),
-    path('content/<slug:slug>/tasks/', BucketTaskListView.as_view(), name='bucket-task-list'),
-
 
 ]
 

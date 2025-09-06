@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import BucketListView, BucketCreateView, BucketDeleteView, BucketUpdateView, BucketUserListView
+from .views import BucketListView, BucketCreateView, BucketDeleteView, BucketUpdateView, BucketUserListView, CommunityDetailView, CommunityCreateView, BucketTaskListView
 
 
 urlpatterns = [
@@ -8,8 +8,10 @@ urlpatterns = [
     # path('buckets/<int:pk>/', BucketDetailView.as_view(), name='bucket-detail'),
     path('buckets/delete/<int:pk>/', BucketDeleteView.as_view(), name='bucket-delete'),
     path('buckets/update/<int:pk>/', BucketUpdateView.as_view(), name='bucket-update'),
+    path('buckets/<slug:slug>/users/', BucketUserListView.as_view(), name='bucket-user-list'),
+    path('buckets/<slug:slug>/tasks/', BucketTaskListView.as_view(), name='bucket-task-list'),
 
-    path('bucket/<int:pk>/users/', BucketUserListView.as_view(), name='bucket-user-list'),
-
+    path('community/', CommunityDetailView.as_view(), name='community-detail'),
+    path('community/new', CommunityCreateView.as_view(), name='community-create')
 
 ]

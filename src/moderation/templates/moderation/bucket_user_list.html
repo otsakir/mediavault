@@ -1,11 +1,16 @@
-{% extends 'content/bucket_sub_list.html' %}
+{% extends 'moderation/bucket_sub_list.html' %}
 {% load formutils %}
 
+
+{% block subbuttons %}
+{%  endblock %}
 
 {% block sub %}
     <div class="p-4 shadow">
 
-            USER LIST
+
+        <h2>People in community</h2>
+        Community members: {{  community_members }}
 
 {#        {%  if object_list|length > 0 %}#}
 {#            <div class="grid grid-cols-4 gap-4 bg-white">#}

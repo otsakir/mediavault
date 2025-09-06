@@ -11,7 +11,9 @@
                 </div>
             </a>
         
-        <div>
+        <div class="flex gap-4">
+            <a class="{{ ''|append_class:'link' }}" href='{%  url 'bucket-list' %}'>Buckets</a>
+            <a class="{{ ''|append_class:'link' }}" href='{%  url 'community-detail' %}'>Community</a>
             <a class="{{ ''|append_class:'link' }}" href='{%  url 'logout' %}' title="{{ user.username }}">Logout</a>
         </div>
     </div>
