@@ -110,7 +110,7 @@ class BucketTaskListView(BucketMembershipMixin, BucketSubListView):
     menuitem = 'tasks'
 
     def get_queryset(self):
-        return FetchTaskResult.objects.filter(bucket=self.authorized_bucket)
+        return FetchTaskResult.objects.filter(bucket=self.bucket)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

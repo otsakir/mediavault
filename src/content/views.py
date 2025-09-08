@@ -49,11 +49,8 @@ class ContentUploadForm(forms.Form):
 
 
 def authorize_bucket_access(request, bucket_slug, permission_str):
-    print('checking permission:', permission_str)
     has_perm = request.user.has_perm(permission_str)
-    print('has_perm:', has_perm)
     if not request.user.has_perm(permission_str):
-        print("Permission denied")
         raise PermissionDenied("You can't access this bucket.") # no permission
     bucket = get_object_or_404(Bucket, slug=bucket_slug)
     if not bucket.users.contains(request.user):
@@ -89,9 +86,9 @@ def content_root(request, slug):
 
             redirect_url = reverse_lazy('content-root', kwargs={'slug': slug}) + f'?uploaded=yes'
             return HttpResponseRedirect(redirect_url)
-    elif request.method == 'GET':
-        content_items = ContentItem.objects.filter(bucket=bucket)
-        content_items_list = [{'id': item.id, 'title': item.title, 'streaming': item.streaming} for item in content_items]
+    # elif request.method == 'GET':
+    content_items = ContentItem.objects.filter(bucket=bucket)
+    content_items_list = [{'id': item.id, 'title': item.title, 'streaming': item.streaming} for item in content_items]
 
     return render(request, 'content/content_root.html', {
         'bucket': {'title': bucket.title, 'slug': bucket.slug},
@@ -165,7 +162,7 @@ class AuthorizeBucketAccessMixin(UserPassesTestMixin):
     bucket_permission_str = 'content.view_contentitem'  # default
 
     def test_func(self):
-        print("AuthorizeBucketAccessMixin: in test_func()", self.kwargs.get('slug'))
+        # print("AuthorizeBucketAccessMixin: in test_func()", self.kwargs.get('slug'))
         self.authorized_bucket = authorize_bucket_access(self.request, self.kwargs.get('slug'), self.bucket_permission_str)
         return True
 

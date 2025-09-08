@@ -11,7 +11,7 @@ class BucketMembershipMixin(UserPassesTestMixin):
     bucket = None
 
     def test_func(self):
-        print("BucketMembershipMixin: in test_func()")
+        # print("BucketMembershipMixin: in test_func()")
         try:
             self.bucket = Bucket.objects.get(slug=self.kwargs.get('slug'), users__id=self.request.user.id)
         except Bucket.DoesNotExist as e:

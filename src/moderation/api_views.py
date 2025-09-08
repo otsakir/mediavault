@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -12,6 +12,11 @@ class APIBucketListView(ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+
+class APIBucketCreateView(CreateAPIView):
+    serializer_class = BucketSerializer
+    authentication_classes = TokenAuthentication
+    permission_classes = []
 
 #
 # class BucketListView(PermissionRequiredMixin, ListView):
