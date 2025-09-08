@@ -23,7 +23,7 @@ class APIBucketCreateView(CreateAPIView):
 #     model = Bucket
 #     paginate_by = 10
 #     permission_required = 'content.view_bucket'
-#     template_name = 'moderation/bucket_list.html'
+#     template_name = 'buckets/bucket_list.html'
 #
 #     def get_queryset(self):
 #         return self.request.user.bucket_set.all()

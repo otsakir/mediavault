@@ -23,6 +23,6 @@ urlpatterns = [
     path('', RedirectView.as_view(url='buckets/', permanent=True), name='home'),
     path('admin/', admin.site.urls),
     path('', include('content.urls')),
-    path('', include('moderation.urls')),
+    path('', include('buckets.urls')),
     path('', include("authorize.urls")),
 ] + debug_toolbar_urls()

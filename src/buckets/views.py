@@ -12,7 +12,7 @@ class BucketListView(PermissionRequiredMixin, ListView):
     model = Bucket
     paginate_by = 10
     permission_required = 'content.view_bucket'
-    template_name = 'moderation/bucket_list.html'
+    template_name = 'buckets/bucket_list.html'
 
     def get_queryset(self):
         return self.request.user.bucket_set.all()
@@ -21,7 +21,7 @@ class BucketListView(PermissionRequiredMixin, ListView):
 class BucketCreateView(PermissionRequiredMixin, CreateView):
     model = Bucket
     fields = ['title', 'description']
-    template_name = 'moderation/bucket_form.html'
+    template_name = 'buckets/bucket_form.html'
     success_url = reverse_lazy('bucket-list')
     permission_required = 'content.add_bucket'
 
@@ -34,21 +34,21 @@ class BucketCreateView(PermissionRequiredMixin, CreateView):
 
 # class BucketDetailView(DetailView):
 #     model = Bucket
-#     template_name = 'moderation/bucket_detail.html'
+#     template_name = 'buckets/bucket_detail.html'
 
 
 class BucketDeleteView(PermissionRequiredMixin, DeleteView):
     model = Bucket
     success_url = reverse_lazy('bucket-list')
     permission_required = 'content.delete_bucket'
-    template_name = 'moderation/bucket_confirm_delete.html'
+    template_name = 'buckets/bucket_confirm_delete.html'
 
 
 class BucketUpdateView(PermissionRequiredMixin, UpdateView):
     model = Bucket
     fields = ['title', 'description']
     permission_required = 'content.change_bucket'
-    template_name = 'moderation/bucket_form.html'
+    template_name = 'buckets/bucket_form.html'
 
     success_url = reverse_lazy('bucket-list')
 
@@ -81,7 +81,7 @@ class BucketSubListView(ListView):
 class BucketTaskListView(BucketMembershipMixin, BucketSubListView):
     model = FetchTaskResult
     paginate_by = 10
-    template_name = 'moderation/bucket_task_list.html'
+    template_name = 'buckets/bucket_task_list.html'
     menuitem = 'tasks'
 
     def get_queryset(self):
@@ -100,7 +100,7 @@ class BucketTaskListView(BucketMembershipMixin, BucketSubListView):
 
 
 class BucketUserListView(BucketMembershipMixin, BucketSubListView):
-    template_name = 'moderation/bucket_user_list.html'
+    template_name = 'buckets/bucket_user_list.html'
     model = User
     menuitem = 'users'
 

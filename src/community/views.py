@@ -5,7 +5,7 @@ from django.views.generic import DetailView, CreateView
 from django.views.generic.edit import FormMixin
 
 from community.models import Community
-from moderation.services import CommunityService
+from buckets.services import CommunityService
 
 
 # Create your views here.

@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'authorize.apps.AuthorizeConfig',
     'core.apps.CoreConfig',
-    'moderation.apps.ModerationConfig',
+    'buckets.apps.ModerationConfig',
     'content.apps.ContentConfig',
     'community.apps.CommunityConfig',
     'django.contrib.admin',
