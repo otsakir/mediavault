@@ -1,11 +1,9 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
-from django.views.generic.edit import FormMixin
-from core.models import Bucket, Community
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from core.models import Bucket
 from core.views import BucketMembershipMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
-from moderation.services import CommunityService
 from content.models import FetchTaskResult
 from django.http import HttpResponseRedirect
 
@@ -69,29 +67,6 @@ class BucketUpdateView(PermissionRequiredMixin, UpdateView):
 #         bucket = self.authorized_bucket
 #         print('bucket:', bucket, bucket.users.all())
 #         return context
-
-
-class CommunityDetailView(LoginRequiredMixin, DetailView):
-    template_name = 'moderation/community_detail_template.html'
-
-    def get_object(self, queryset=None):
-
-        member = self.request.user.get_member()
-        if member:
-            return member.community
-
-        return None
-
-
-class CommunityCreateView(LoginRequiredMixin, CreateView):
-    template_name = 'moderation/community_form.html'
-    model = Community
-    fields = ['name']
-    success_url = reverse_lazy('community-detail')
-
-    def form_valid(self, form):
-        self.object = CommunityService.create_community(self.request.user, form.cleaned_data['name'])
-        return FormMixin.form_valid(self, form)
 
 
 class BucketSubListView(ListView):

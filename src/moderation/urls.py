@@ -1,5 +1,7 @@
 from django.urls import path, include
-from .views import BucketListView, BucketCreateView, BucketDeleteView, BucketUpdateView, BucketUserListView, CommunityDetailView, CommunityCreateView, BucketTaskListView
+from .views import BucketListView, BucketCreateView, BucketDeleteView, BucketUpdateView, BucketUserListView, \
+    BucketTaskListView
+from community.views import CommunityDetailView, CommunityCreateView
 from .api_views import APIBucketListView
 
 

@@ -25,6 +25,16 @@ The following roles seem appropriate:
 ffmpeg, ffprobe, youtube-dl
 
 
+## Django apps
+
+**Community**. We have community models. Each community may have members. Add members to a cummunity. Invitations.
+
+**Buckets**. Bucket CRUD. Per-bucket user permissions. Async task overview. Relation to community. 
+
+**Content**. Bucket content. ContentItem CRUD. Content upload tasks. Content download, streaming and media player.
+
+
+
 ## Data schema
 
 * A user might be a member of a single community. Membership is signified by the existence of a Member entity attached to 

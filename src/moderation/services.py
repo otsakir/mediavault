@@ -1,4 +1,4 @@
-from core.models import Community, Member
+from community.models import Community, Member
 from django.contrib.auth.models import User
 from .exceptions import AlreadyMemberException
 from django.db import transaction
