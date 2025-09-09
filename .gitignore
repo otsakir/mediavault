@@ -5,3 +5,4 @@ src/db.sqlite3
 src/uploads/*
 src/**/migrations/
 src/static-prod/
+src/node_modules/
