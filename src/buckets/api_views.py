@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from core.models import Bucket
+from .models import Bucket
 from .serializers import BucketSerializer
 
 

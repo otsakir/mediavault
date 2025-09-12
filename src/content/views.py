@@ -10,7 +10,8 @@ from django.utils.http import http_date
 from django.views import View
 from django.views.static import was_modified_since
 
-from content.models import Bucket, ContentItem, FetchTaskResult
+from content.models import ContentItem, FetchTaskResult
+from buckets.models import Bucket
 from django.views.generic import ListView, DetailView, DeleteView, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView

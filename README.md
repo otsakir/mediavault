@@ -54,3 +54,14 @@ ffmpeg, ffprobe, youtube-dl
 * `POST community/` .Create a community for the current user if he doesn't already have one. Give a 'name'.
 * Invite members to the community. Or we might as well add them with no questions asked.
 
+
+###  Permission scheme
+
+internally uses a string with a fixed size of 30 characters. Each position in the string corresponds to a specific
+permission. For example, at index 0 we have 'READ_ACCESS'. A permission character can have one of the following values:
+
+. : The permission is not set. It may not be defined or it may not be set. Initially, all indexes will be undefined. 
+T : The permission is set.
+F : The permission is negative. We'll see if this makes sense and how it will be different from '.'
+
+

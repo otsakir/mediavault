@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
-from core.models import Bucket
+from buckets.models import Bucket
 from core.views import BucketMembershipMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User

@@ -5,7 +5,8 @@ from django.core.exceptions import BadRequest
 from yt_dlp import YoutubeDL
 from tempfile import TemporaryDirectory
 from django.conf import settings
-from content.models import ContentItem, Bucket, FetchTaskResult
+from content.models import ContentItem, FetchTaskResult
+from buckets.models import Bucket
 
 OPTIONS = {
     'format': 'm4a/bestaudio/best',

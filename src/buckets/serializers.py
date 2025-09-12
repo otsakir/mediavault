@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Bucket
+from buckets.models import Bucket
 
 
 class BucketSerializer(serializers.ModelSerializer):

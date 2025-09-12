@@ -11,3 +11,13 @@ class Community(models.Model):
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
+
+
+def get_member(user):
+    try:
+        return user.member
+    except Member.DoesNotExist as e:
+        return None
+
+
+User.add_to_class('get_member', get_member)

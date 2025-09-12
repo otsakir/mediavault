@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import UserPassesTestMixin
-from .models import Bucket
+from buckets.models import Bucket
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 
