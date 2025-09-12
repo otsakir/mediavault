@@ -6,16 +6,13 @@
 
     <div class="flex h-screen">
         <div class="w-[400px] m-auto">
-            {% if form.errors %}
-                <p>Your username and password didn't match. Please try again.</p>
-            {% endif %}
 
             {% if next %}
                 {% if user.is_authenticated %}
                 <p>Your account doesn't have access to this page. To proceed,
                 please login with an account that has access.</p>
                 {% else %}
-                <p>Please login to see this page.</p>
+                <p class="font-bold mb-2">Please login first to see this page</p>
                 {% endif %}
             {% endif %}
 
@@ -29,6 +26,10 @@
                     <label class='block' for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
                     {% with classes=''|append_class:'text' %}{% render_field form.password class=classes %}{% endwith %}
                 </div>
+
+            {% if form.errors %}
+                <p class="mb-4 text-sm text-red-500">Your username and password didn't match. Please try again.</p>
+            {% endif %}
 
                 <input type="submit" value="Login" class="{{ ''|append_class:'button' }}">
                 <input type="hidden" name="next" value="{{ next }}">
