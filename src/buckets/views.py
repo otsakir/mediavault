@@ -1,11 +1,48 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
-from buckets.models import Bucket
+from buckets.models import Bucket, BucketPermissions
 from core.views import BucketMembershipMixin
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
 from content.models import FetchTaskResult
 from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
+
+
+
+
+# class AuthorizeBucketAccessMixin(UserPassesTestMixin):
+#     authorized_bucket = None  # this is set if the user is granted access to this bucket
+#     bucket_permission_str = 'content.view_contentitem'  # default
+#
+#     def test_func(self):
+#         # print("AuthorizeBucketAccessMixin: in test_func()", self.kwargs.get('slug'))
+#         self.authorized_bucket = authorize_bucket_access(self.request, self.kwargs.get('slug'), self.bucket_permission_str)
+#         return True
+
+class AuthorizeBucketAccessMixin(UserPassesTestMixin):
+    """
+        Authorizes access to a bucket for the logged user.
+
+        URL:
+           bucket_slug|bucket_id path parameters should be present
+    """
+
+    slug_url_kwarg = "bucket_slug"
+    pk_url_kwarg = "bucket_id"
+
+    permission_set = []
+    """List of all required permissions for authorization to be granted"""
+
+    def test_func(self):
+        try:
+            bp = BucketPermissions.objects.get(bucket=self.get_object(), user=self.request.user)
+        except BucketPermissions.DoesNotExist as e:
+            raise PermissionDenied()
+        print("AuthorizeBucketAccessMixin: bucket_permission:", bp)
+
+        return True
+        # bucket = self.get_object()  # TODO catch error thrown when no such object exists to return a generic access related message, not a 404
 
 
 class BucketListView(PermissionRequiredMixin, ListView):
@@ -44,7 +81,7 @@ class BucketDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'buckets/bucket_confirm_delete.html'
 
 
-class BucketUpdateView(PermissionRequiredMixin, UpdateView):
+class BucketUpdateView(AuthorizeBucketAccessMixin, UpdateView):
     model = Bucket
     fields = ['title', 'description']
     permission_required = 'content.change_bucket'

@@ -1,3 +1,4 @@
 from django.contrib import admin
+from buckets.models import BucketPermissions
 
-# Register your models here.
+admin.site.register(BucketPermissions)

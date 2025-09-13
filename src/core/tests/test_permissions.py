@@ -1,28 +1,37 @@
-from core.security import PermissionScheme
-import pytest
+from enum import Enum
+from core.security import PermissionSchemeBase
 
 
-class PermissionSchemeA(PermissionScheme):
-    read = '.'
-    write = '.'
-    delete = '.'
-    list = 'T'
+class MyPermissionScheme(PermissionSchemeBase):
+
+    class Permissions(Enum):
+        Read = 0
+        Write = 1
+        Execute = 2
+
+        List = 4
+
+    def asdf(self, a: Permissions):
+        pass
 
 
-def test_permissions():
-    perm_scheme = PermissionSchemeA('TF.....')
-    assert perm_scheme.read() is True
-    assert perm_scheme.write() is False
-    assert perm_scheme.delete() is False
-    assert perm_scheme.list() is True
+def test_single_permission():
 
-    # assert too long permission strings fail
-    with pytest.raises(ValueError):
-        PermissionScheme('.'*31)
-
-    with pytest.raises(ValueError):
-        perm_scheme = PermissionScheme('ASDF')
+    p = MyPermissionScheme('TF..T')
+    assert p.allows(p.Permissions.Read)
+    assert not p.allows(p.Permissions.Write)
+    assert not p.allows(p.Permissions.Execute)
+    assert p.allows(p.Permissions.List)
 
 
+def test_elliptic_permission():
+
+    p = MyPermissionScheme('TF')
+    assert not p.allows(p.Permissions.Execute)
+
+
+def test_many_permissions():
+    p = MyPermissionScheme('TFFFT')
+    assert p.allows_all([p.Permissions.Read, p.Permissions.List])
 
 

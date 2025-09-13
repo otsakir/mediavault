@@ -1,42 +1,40 @@
-import re
+from typing import Iterable
 
 
-class PermissionScheme:
-    """A base class for defining custom permissions"""
+class PermissionSchemeBase:
 
-    max_count = 30
-    """Maximum number of permission definitions allowed"""
+    last_permission_index = None
+    data = None
 
-    data = '.' * max_count
-    validation_exp = re.compile('^[TF\.]*$')  # only T, F, '.' characters allowed
-    valid_characters = ['T', 'F', '.']
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        cls.last_permission_index = max(permission.value for permission in cls.Permissions)
 
-    """Determine what will be returned when running, for example, perm.read()"""
-    def resolve_value_at_index(self, index, default_value) -> bool:
-        at_index = self.data[index]
-        if at_index == '.':
-            at_index = default_value
-        return at_index == 'T'
+    def __init__(self, perm_string):
+        """
+        Populates the internal permission data array using the given permission string. Checks only indexes defined
+        in nested Permission class. Sets permission to True only if there is letter 'T' in the respective
+        permission_string index.
 
-    def generate_getter(self, name, index, default_value):
-        def f():
-            # print("inside getter for", name, 'at position', index, ', data: ', self.data)
-            return self.resolve_value_at_index(index, default_value)
-        return f
+        Args:
+            perm_string (str): a permission string like 'TFF.F.TF"
 
-    def validate_permission_char(self, char):
-        if char not in self.valid_characters:
-            raise ValueError(f'invalid permission character {char}. Accepted values {self.valid_characters}')
+        Throws:
 
-    def __init__(self, permission_string):
-        if len(permission_string) > self.max_count or not self.validation_exp.match(permission_string):
-            raise ValueError(f'invalid permission string: {permission_string}')
-        self.data = permission_string + self.data[len(permission_string):] # overwrite default 'data' with given permission string but keep the end of it
+        """
 
-        permission_fields = [i for i in self.__class__.__dict__.items() if not i[0].startswith('__')]
+        self.data = [False]*(self.last_permission_index+1)  # so make sure data[] has available slots for all indexes defined in the Permission enum.
+        for perm in self.Permissions:
+            i = perm.value
+            perm_char = perm_string[i] if i < len(perm_string) else '.'
+            self.data[i] = True if perm_char == 'T' else False
 
-        i = 0
-        for field_name, field_value in permission_fields:
-            self.validate_permission_char(field_value)
-            self.__setattr__(field_name, self.generate_getter(field_name, i, field_value))
-            i = i + 1
+    def allows(self, perm):
+        return self.data[perm.value]
+
+    def allows_all(self, iterable: Iterable):
+        return all(self.allows(p) for p in iterable)
+
+    @classmethod
+    def length(cls):
+        return cls.last_permission_index+1
