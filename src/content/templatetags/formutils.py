@@ -27,9 +27,13 @@ def append_class(classes_str, tag ):
     more_classes = classes_for_tag.get(tag, '')
     return f'{classes_str} {more_classes}'
 
+def startswith(text, starts):
+    return text.startswith(starts)
+
 
 register.filter('field_type', field_type)
 register.filter('append_class', append_class)
+register.filter('startswith', startswith)
 
 
 @register.simple_tag

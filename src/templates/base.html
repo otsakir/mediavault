@@ -10,10 +10,20 @@
                     <h1 class="text-3xl font-bold text-slate-700">Media Vault</h1>
                 </div>
             </a>
-        
+
         <div class="flex gap-4">
-            <a class="{{ ''|append_class:'link' }}" href='{%  url 'bucket-list' %}'>Buckets</a>
-            <a class="{{ ''|append_class:'link' }}" href='{%  url 'community-detail' %}'>Community</a>
+            {% if request.path|startswith:'/buckets/' %}
+                <span class="underline">Buckets</span>
+            {% else %}
+                <a class="{{ ''|append_class:'link' }}" href='{%  url 'bucket-list' %}'>Buckets</a>
+            {% endif %}
+
+            {% if request.path|startswith:'/community/' %}
+                <span class="underline">Community</span>
+            {% else %}
+                <a class="{{ ''|append_class:'link' }}" href='{%  url 'community-detail' %}'>Community</a>
+            {% endif %}
+
             <a class="{{ ''|append_class:'link' }}" href='{%  url 'logout' %}' title="{{ user.username }}">Logout</a>
         </div>
     </div>
