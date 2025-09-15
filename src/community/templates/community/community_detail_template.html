@@ -3,6 +3,9 @@
 {% load formutils %}
 
 {% block content %}
+
+    {% include 'breadcrumbs.html' %}
+
     <div class="flex items-center justify-between mb-4 border-b py-2">
         {% if object %}
             <h1 class="text-3xl">Community - {{ object.name }}</h1>

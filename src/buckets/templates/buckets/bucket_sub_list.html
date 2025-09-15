@@ -3,9 +3,12 @@
 
 
 {% block content %}
+
+    {% include 'breadcrumbs.html' %}
+
     <div class="flex items-center justify-between mb-4 border-b py-2">
         <div class="flex items-center gap-2">
-            <a class='hover:text-blue-800 ' href="{% url 'content-root' parent_bucket.slug %}">{% icon 'arrow-uturn-left' %}</a>
+{#            <a class='hover:text-blue-800 ' href="{% url 'content-root' parent_bucket.slug %}">{% icon 'arrow-uturn-left' %}</a>#}
             <h1 class="text-3xl">Bucket '{{ parent_bucket.slug }}'</h1>
         </div>
     </div>

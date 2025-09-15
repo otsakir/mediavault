@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('content.urls')),
     path('', include('buckets.urls')),
     path('', include("authorize.urls")),
+    path('', include("community.urls")),
 ] + debug_toolbar_urls()

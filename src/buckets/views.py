@@ -7,6 +7,7 @@ from content.models import FetchTaskResult
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
 from django.db.models import Prefetch
+from core.breadcrumbs import Breadcrumb
 
 
 class AuthorizeBucketAccessMixin(UserPassesTestMixin):
@@ -73,6 +74,14 @@ class BucketListView(PermissionRequiredMixin, ListView):
         return Bucket.objects.prefetch_related(Prefetch('bucketpermissions_set', BucketPermissions.objects.filter(user=logged_user), to_attr='user_permissions')).filter(users=logged_user)
 
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['breadcrumbs'] = [
+            Breadcrumb('Buckets', None)
+        ]
+        return context
+
+
 class BucketCreateView(PermissionRequiredMixin, CreateView):
     model = Bucket
     fields = ['title', 'description']
@@ -90,6 +99,14 @@ class BucketCreateView(PermissionRequiredMixin, CreateView):
             Permissions.modify_permissions
         ])})
         return super().form_valid(form)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['breadcrumbs'] = [
+            Breadcrumb('Buckets', reverse('bucket-list', kwargs=kwargs)),
+            Breadcrumb('New', None),
+        ]
+        return context
 
 
 # class BucketDetailView(DetailView):
@@ -115,6 +132,14 @@ class BucketUpdateView(AuthorizeBucketAccessMixin, UpdateView):
 
     pk_url_kwarg = 'bucket_id'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['breadcrumbs'] = [
+            Breadcrumb('Buckets', reverse('bucket-list', kwargs=kwargs)),
+            Breadcrumb(self.parent_bucket.title, None)
+        ]
+        return context
+
 
 class BucketSubListView(ListView):
     menuitem = None
@@ -136,9 +161,14 @@ class BucketTaskListView(AuthorizeBucketAccessMixin, BucketSubListView):
     def get_queryset(self):
         return FetchTaskResult.objects.filter(bucket=self.parent_bucket)
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     return context
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['breadcrumbs'] = [
+            Breadcrumb('Buckets', reverse('bucket-list', kwargs=kwargs)),
+            Breadcrumb(self.parent_bucket.title, reverse('bucket-update', kwargs=self.kwargs)),
+            Breadcrumb('Settings', None),
+        ]
+        return context
 
     def get(self, request, *args, **kwargs):
         if request.GET.get('refresh', None):
@@ -156,9 +186,14 @@ class BucketUserListView(AuthorizeBucketAccessMixin, BucketSubListView):
     def get_queryset(self):
         return User.objects.filter(bucket=self.parent_bucket)
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     return context
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['breadcrumbs'] = [
+            Breadcrumb('Buckets', reverse('bucket-list', kwargs=kwargs)),
+            Breadcrumb(self.parent_bucket.title, reverse('bucket-update', kwargs=self.kwargs)),
+            Breadcrumb('Settings', None),
+        ]
+        return context
 
 
 class SettingsRedirectView(AuthorizeBucketAccessMixin, RedirectView):
