@@ -34,4 +34,15 @@ def test_many_permissions():
     p = MyPermissionScheme('TFFFT')
     assert p.allows_all([p.Permissions.Read, p.Permissions.List])
 
+def test_permissions_as_strings():
+    p = MyPermissionScheme('TFFFT')
+    permission_strings = p.allowed_permissions()
+    assert 'Read' in permission_strings
+    assert 'Write' not in permission_strings
+
+def test_to_permissions_string():
+
+    permissions_string = MyPermissionScheme.to_permissions_string([MyPermissionScheme.Permissions.Read, MyPermissionScheme.Permissions.Write])
+    assert permissions_string == 'TT...'
+
 

@@ -9,6 +9,7 @@
     <h1 class="text-3xl">Delete bucket '{{  object.title }}'</h1>
 </div>
 
+
 <form method="post" class="text-center">{% csrf_token %}
     <p class="text-center mb-4 mt-30">Are you sure you want to delete "{{ object.title }}"?</p>
     {{ form }}
