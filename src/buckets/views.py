@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, RedirectView
 from buckets.models import Bucket, BucketPermissions, Permissions, BucketPermissionScheme
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
@@ -159,3 +159,17 @@ class BucketUserListView(AuthorizeBucketAccessMixin, BucketSubListView):
     # def get_context_data(self, *args, **kwargs):
     #     context = super().get_context_data(*args, **kwargs)
     #     return context
+
+
+class SettingsRedirectView(AuthorizeBucketAccessMixin, RedirectView):
+    permanent = False
+    bucket_permission_set = [Permissions.visit_settings]
+
+    def get_redirect_url(self, *args, **kwargs):
+        if self.permission_scheme.allows(Permissions.view_tasks):
+            return reverse('bucket-task-list', kwargs=kwargs)
+
+        if self.permission_scheme.allows(Permissions.manage_users):
+            return reverse('bucket-user-list', kwargs=kwargs)
+
+        raise PermissionDenied('not authorized to access bucket settings')

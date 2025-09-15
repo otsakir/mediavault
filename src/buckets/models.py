@@ -18,6 +18,7 @@ class Permissions(Enum):
     update_tasks = 8
     modify_permissions = 9
     manage_users = 10
+    visit_settings = 11
 
 
 class BucketPermissionScheme(PermissionSchemeBase):
