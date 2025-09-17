@@ -5,6 +5,6 @@ from buckets.models import Bucket
 class BucketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bucket
-        fields = ['title', 'description', 'slug']
+        fields = ['id', 'title', 'description', 'slug']
 
 
