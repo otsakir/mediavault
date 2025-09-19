@@ -6,5 +6,6 @@ class BucketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bucket
         fields = ['id', 'title', 'description', 'slug']
+        # read_only fields ? TODO
 
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import BucketListView, BucketCreateView, BucketDeleteView, BucketUpdateView, BucketUserListView, \
     BucketTaskListView, SettingsRedirectView
-from .api_views import APIBucketListView
+from .api_views import APIBucketListCreateView, APIBucketRetrieveUpdateDestroyView
 
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('buckets/<int:bucket_id>/users/', BucketUserListView.as_view(), name='bucket-user-list'),
     path('buckets/<int:bucket_id>/tasks/', BucketTaskListView.as_view(), name='bucket-task-list'),
 
-    path('api/buckets', APIBucketListView.as_view(), name='api-bucket-list')
+    path('api/buckets', APIBucketListCreateView.as_view(), name='api-bucket-list'),
+    path('api/buckets/<int:bucket_id>', APIBucketRetrieveUpdateDestroyView.as_view(), name='api-bucket-item'),
 
 ]

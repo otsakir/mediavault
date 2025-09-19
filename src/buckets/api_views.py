@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ from .serializers import BucketSerializer
 import time
 
 
-class APIBucketListView(ListAPIView):
+class APIBucketListCreateView(ListCreateAPIView):
     queryset = Bucket.objects.all()
     serializer_class = BucketSerializer
     # authentication_classes = [TokenAuthentication]
@@ -19,17 +19,9 @@ class APIBucketListView(ListAPIView):
         return super().get_queryset()
 
 
-class APIBucketCreateView(CreateAPIView):
+class APIBucketRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Bucket.objects.all()
     serializer_class = BucketSerializer
-    authentication_classes = TokenAuthentication
-    permission_classes = []
 
-#
-# class BucketListView(PermissionRequiredMixin, ListView):
-#     model = Bucket
-#     paginate_by = 10
-#     permission_required = 'content.view_bucket'
-#     template_name = 'buckets/bucket_list.html'
-#
-#     def get_queryset(self):
-#         return self.request.user.bucket_set.all()
+    lookup_url_kwarg = 'bucket_id'
+    lookup_field = 'id'
