@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from 'next/link'
 import {Fragment} from "react";
 import {TrashButton} from "@/app/ui/components";
+import {SquareArrowUpRight, Trash} from "lucide-react";
 
 
 async function BucketsList() {
@@ -16,8 +17,11 @@ async function BucketsList() {
     {
         data.map((bucket) => {
             return (<Fragment key={bucket.id}>
-                <div className='col-span-3'>
+                <div className='col-span-3 flex items-center gap-2'>
                     <Link className='hover:underline' href={`/buckets/${bucket.id}`}>{bucket.title}</Link>
+                    <Link href={`/buckets/${bucket.slug}`} target='_blank'>
+                        <SquareArrowUpRight className='h-6 w-6 text-gray-600 hover:text-gray-400 transition-colors' />
+                    </Link>
                 </div>
                 <div className='flex justify-end'>
                     <TrashButton bucket={bucket} />
