@@ -5,13 +5,24 @@ import Link from 'next/link'
 import {Fragment} from "react";
 import {TrashButton} from "@/app/ui/components";
 import {SquareArrowUpRight, Trash} from "lucide-react";
+import {cookies} from "next/headers";
 
 
 async function BucketsList() {
+
+    const cookieStore = await cookies();
+    const access = cookieStore.get('access')?.value
+
     // TODO - error handling
-    const response = await fetch('http://localhost:8000/api/buckets')
+    const response = await fetch('http://localhost:8000/api/buckets', {
+        headers: { Authorization: `Bearer ${access}` }
+    })
     const data = await response.json()
 
+    // console.log("<BucketList/>: data", data)
+
+
+    // return <div>No buckets</div>
 
     return <div className="grid grid-cols-4">
     {

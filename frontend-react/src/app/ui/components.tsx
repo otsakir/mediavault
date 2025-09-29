@@ -3,7 +3,7 @@
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 import {Trash} from "lucide-react";
-import {deleteBucket} from "@/app/lib/actions";
+import {deleteBucket, logout} from "@/app/lib/actions";
 import {useState} from "react";
 import {useActionState} from "react";
 
@@ -11,14 +11,21 @@ import {useActionState} from "react";
 export function MainMenu({menuitems}) {
     const pathname = usePathname()
 
-        return <div className = "flex gap-4">
-                {
-                    menuitems.map((item) => {
-                        return pathname === item.href ? <span key={item.href} className='underline'>{item.label}</span> :
-                            <Link key={item.href} className='hover:underline' href={item.href}>{item.label}</Link>
-                    })
-                }
-        </div>
+    function onLogoutClick() {
+        console.log("Logout clicked")
+        logout()
+    }
+
+    return <div className = "flex gap-4">
+            {
+                menuitems.map((item) => {
+                    return pathname === item.href ? <span key={item.href} className='underline'>{item.label}</span> :
+                        <Link key={item.href} className='hover:underline' href={item.href}>{item.label}</Link>
+                })
+            }
+            <button onClick={onLogoutClick} className='hover:underline'>Logout</button>
+
+    </div>
 }
 
 
@@ -59,5 +66,33 @@ export function BucketForm({serverFunction, initialState, bucketId}) {
         </div>
         {bucketId ? <input type='hidden' name='id' value={bucketId} /> : ''}
         <input className="hover:bg-red-500 text-white px-4 p-2 bg-black rounded-md" type="submit" value={bucketId ? 'Update' : 'Create'}/>
+    </form>
+}
+
+
+export function LoginForm({serverFunction}) {
+
+    const initialState = {
+        username : '',
+        password : ''
+    }
+    const [formState, formAction, isPending] = useActionState(serverFunction, initialState)
+
+    return <form action={formAction}>
+        <div className={'mb-4'}>
+            <label className='block mb-2' htmlFor='username'>Username</label>
+            <input defaultValue={formState.username} id='usernane' name='username' className='p-2 rounded-md w-full bg-white focus:outline-none'/>
+        </div>
+        <div className={'mb-2'}>
+            <label className='block mb-2' htmlFor='password'>Password</label>
+            <input defaultValue={formState.password} id='password' name='password' type={'password'}
+                   className='p-2 rounded-md w-full bg-white focus:outline-none'/>
+        </div>
+        <div className='text-red-400'>
+            {formState?.error ? formState.error : ''}
+        </div>
+
+        <button className='mt-4 p-2 px-4 rounded-md bg-teal-700 text-white hover:bg-teal-600' type='submit'>Login</button>
+
     </form>
 }

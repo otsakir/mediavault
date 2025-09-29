@@ -2,7 +2,7 @@ from django.urls import path
 from .views import MainLoginView, logout_view
 from rest_framework.authtoken.views import obtain_auth_token
 # JWT
-from .views import MvTokenObtainPairView
+from .views import MvTokenObtainPairView, MvTokenRefreshView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
@@ -13,5 +13,5 @@ urlpatterns = [
 
     # JWT auth endpoints
     path("api/token/", MvTokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/refresh/", MvTokenRefreshView.as_view(), name="token_refresh"),
 ]

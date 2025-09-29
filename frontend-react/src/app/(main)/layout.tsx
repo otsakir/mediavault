@@ -4,7 +4,7 @@ import {MainMenu} from "@/app/ui/components";
 const menuitems = [
     {href: '/buckets', label: 'Buckets'},
     {href: '/community', label: 'Community'},
-    {href: '/logout', label: 'Logout'},
+    // {href: '/logout', label: 'Logout'},
 ]
 
 

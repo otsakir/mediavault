@@ -12,10 +12,11 @@ class APIBucketListCreateView(ListCreateAPIView):
     queryset = Bucket.objects.all()
     serializer_class = BucketSerializer
     # authentication_classes = [TokenAuthentication]
+
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        time.sleep(1)
+        # time.sleep(1)
         return super().get_queryset()
 
 
