@@ -166,5 +166,6 @@ SIMPLE_JWT = {
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,  # usually your Django secret key
     "AUTH_HEADER_TYPES": ("Bearer",),
+    "TOKEN_OBTAIN_SERIALIZER": "authorize.serializers.MvTokenObtainPairSerializer",
 }
 
